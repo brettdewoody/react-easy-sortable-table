@@ -2,7 +2,7 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
 
   getInitialState: function() {
     return {
-      data: this.props.data || []
+      data: []
     };
   },
 
