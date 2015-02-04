@@ -1,4 +1,4 @@
-var TableComponent = React.createClass({displayName: 'TableComponent',
+var TableComponent = React.createClass({displayName: "TableComponent",
 
   getInitialState: function() {
     return {
@@ -31,30 +31,16 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
 
     if (this.isMounted()){
 
-      var header = columnNames.map(function(c) {
-        return React.createElement("th", null, c);
-      }, this);
-
-      var cell = function(x) {
-        return columnNames.map(function(c) {
-          return React.createElement("td", {onClick: ""}, x[c]);
-        }, this);
-      }.bind(this);
-
       this.state.data.forEach(function(item, idx) {
         rows.push(
-          React.createElement("tr", {key: item.id}, 
-             cell(item) 
-          )
+          React.createElement(TableRowItem, {key: item.id, data: item, columns: columnNames})
         );
       }.bind(this));
 
       return (
         React.createElement("table", null, 
           React.createElement("thead", null, 
-          React.createElement("tr", null, 
-            header 
-          )
+            React.createElement(TableHeader, {columns: columnNames})
           ), 
           React.createElement("tbody", null, 
             rows 
@@ -68,6 +54,36 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
     }
   }
 
+});
+
+var TableRowItem = React.createClass({displayName: "TableRowItem",
+  render: function() {
+
+    var cell = function() {
+        return this.props.columns.map(function(c) {
+          return React.createElement("td", {key: this.props.data[c]}, this.props.data[c]);
+        }, this);
+      }.bind(this);
+
+    return (
+      React.createElement("tr", null,  cell(this.props.item) )
+    )
+  }
+});
+
+var TableHeader = React.createClass({displayName: "TableHeader",
+  render: function() {
+
+    var cell = function() {
+        return this.props.columns.map(function(c) {
+          return React.createElement("th", {key: c}, c);
+        }, this);
+      }.bind(this);
+
+    return (
+      React.createElement("tr", null,  cell(this.props.item) )
+    )
+  }
 });
 
 React.render(

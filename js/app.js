@@ -31,30 +31,16 @@ var TableComponent = React.createClass({
 
     if (this.isMounted()){
 
-      var header = columnNames.map(function(c) {
-        return <th>{c}</th>;
-      }, this);
-
-      var cell = function(x) {
-        return columnNames.map(function(c) {
-          return <td onClick="">{x[c]}</td>;
-        }, this);
-      }.bind(this);
-
       this.state.data.forEach(function(item, idx) {
         rows.push(
-          <tr key={item.id}>
-            { cell(item) }
-          </tr>
+          <TableRowItem key={item.id} data={item} columns={columnNames}/>
         );
       }.bind(this));
 
       return (
         <table>
           <thead>
-          <tr>
-            { header }
-          </tr>
+            <TableHeader columns={columnNames}/>
           </thead>
           <tbody>
             { rows }
@@ -68,6 +54,36 @@ var TableComponent = React.createClass({
     }
   }
 
+});
+
+var TableRowItem = React.createClass({
+  render: function() {
+
+    var cell = function() {
+        return this.props.columns.map(function(c) {
+          return <td key={this.props.data[c]}>{this.props.data[c]}</td>;
+        }, this);
+      }.bind(this);
+
+    return (
+      <tr>{ cell(this.props.item) }</tr>
+    )
+  }
+});
+
+var TableHeader = React.createClass({
+  render: function() {
+
+    var cell = function() {
+        return this.props.columns.map(function(c) {
+          return <th key={c}>{c}</th>;
+        }, this);
+      }.bind(this);
+
+    return (
+      <tr>{ cell(this.props.item) }</tr>
+    )
+  }
 });
 
 React.render(
