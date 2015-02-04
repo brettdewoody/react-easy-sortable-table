@@ -32,7 +32,13 @@ var TableComponent = React.createClass({
     if (this.isMounted()){
 
       this.state.data.forEach(function(item, idx) {
-        rows.push(<TableRowItem key={item.id} data={item} columns={columnNames}/>)
+         
+             console.log(item.id); // its undefined , idx is the key field
+            
+             // make sure is a unique id (error changes) Encountered two children with the same key, `.$aRowundefined`.
+             // Child keys must be unique; when two children share a key, only the first child will be used.
+             rows.push(<TableRowItem key={idx} data={item} columns={columnNames}/>);
+
       }.bind(this));
 
       return (
