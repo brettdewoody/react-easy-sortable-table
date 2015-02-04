@@ -32,9 +32,7 @@ var TableComponent = React.createClass({displayName: "TableComponent",
     if (this.isMounted()){
 
       this.state.data.forEach(function(item, idx) {
-        rows.push(
-          React.createElement(TableRowItem, {key: item.id, data: item, columns: columnNames})
-        );
+        rows.push(React.createElement(TableRowItem, {key: item.id, data: item, columns: columnNames}))
       }.bind(this));
 
       return (
@@ -56,32 +54,37 @@ var TableComponent = React.createClass({displayName: "TableComponent",
 
 });
 
-var TableRowItem = React.createClass({displayName: "TableRowItem",
-  render: function() {
-
-    var cell = function() {
-        return this.props.columns.map(function(c) {
-          return React.createElement("td", {key: this.props.data[c]}, this.props.data[c]);
-        }, this);
-      }.bind(this);
-
-    return (
-      React.createElement("tr", null,  cell(this.props.item) )
-    )
-  }
-});
-
 var TableHeader = React.createClass({displayName: "TableHeader",
   render: function() {
 
+    var columns = this.props.columns;
+
     var cell = function() {
-        return this.props.columns.map(function(c) {
+        return columns.map(function(c, i) {
           return React.createElement("th", {key: c}, c);
         }, this);
       }.bind(this);
 
     return (
-      React.createElement("tr", null,  cell(this.props.item) )
+      React.createElement("tr", {key: "headerRow"},  cell(this.props.item) )
+    )
+  }
+});
+
+var TableRowItem = React.createClass({displayName: "TableRowItem",
+  render: function() {
+
+    var columns = this.props.columns;
+    var data = this.props.data;
+
+    var td = function(item) {
+        return columns.map(function(c, i) {
+          return React.createElement("td", {key: item[c]}, item[c]);
+        }, this);
+      }.bind(this);
+
+    return (
+      React.createElement("tr", {key: data},  td(data) )
     )
   }
 });
