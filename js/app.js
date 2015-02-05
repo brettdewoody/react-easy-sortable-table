@@ -42,7 +42,6 @@ var TableComponent = React.createClass({
     var data = this.state.data;
 
     if (this.isMounted()){
-
       return (
         <table>
           <thead>
@@ -57,7 +56,6 @@ var TableComponent = React.createClass({
       )
     }
   }
-
 });
 
 var TableHeader = React.createClass({
@@ -94,7 +92,6 @@ var TableBody = React.createClass({
       </tbody>
     )
   }
-
 });
 
 var TableRow = React.createClass({
