@@ -36,7 +36,7 @@ var TableComponent = React.createClass({
           <thead>
             <TableHeader columns={columns} />
           </thead>
-          <TableRows columns={columns} data={data}/>
+          <TableBody columns={columns} data={data}/>
         </table>
       )
     } else {
@@ -49,7 +49,6 @@ var TableComponent = React.createClass({
 });
 
 var TableHeader = React.createClass({
-
   sort: function(column) {
     return function(event){
 
@@ -58,10 +57,9 @@ var TableHeader = React.createClass({
 
   render: function() {
     var columns = this.props.columns;
-
     var cell = function() {
         return columns.map(function(c, i) {
-          return <th onClick={this.sort(c)} key={c}>{c}</th>;
+          return <th onClick={this.sort(c)} sort={"asc"} key={c}>{c}</th>;
         }, this);
       }.bind(this);
 
@@ -71,7 +69,7 @@ var TableHeader = React.createClass({
   }
 });
 
-var TableRows = React.createClass({
+var TableBody = React.createClass({
   render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
@@ -79,7 +77,7 @@ var TableRows = React.createClass({
     return (
       <tbody>
         {data.map(function(item, idx){
-          return <TableRowItem key={idx} data={item} columns={columns}/>;
+          return <TableRow key={idx} data={item} columns={columns}/>;
         })}
       </tbody>
     )
@@ -87,7 +85,7 @@ var TableRows = React.createClass({
 
 });
 
-var TableRowItem = React.createClass({
+var TableRow = React.createClass({
   render: function() {
     var columns = this.props.columns;
     var data = this.props.data;

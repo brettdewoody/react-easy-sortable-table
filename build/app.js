@@ -1,4 +1,4 @@
-var TableComponent = React.createClass({displayName: 'TableComponent',
+var TableComponent = React.createClass({displayName: "TableComponent",
 
   getInitialState: function() {
     return {
@@ -36,7 +36,7 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
           React.createElement("thead", null, 
             React.createElement(TableHeader, {columns: columns})
           ), 
-          React.createElement(TableRows, {columns: columns, data: data})
+          React.createElement(TableBody, {columns: columns, data: data})
         )
       )
     } else {
@@ -48,8 +48,7 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
 
 });
 
-var TableHeader = React.createClass({displayName: 'TableHeader',
-
+var TableHeader = React.createClass({displayName: "TableHeader",
   sort: function(column) {
     return function(event){
 
@@ -58,10 +57,9 @@ var TableHeader = React.createClass({displayName: 'TableHeader',
 
   render: function() {
     var columns = this.props.columns;
-
     var cell = function() {
         return columns.map(function(c, i) {
-          return React.createElement("th", {onClick: this.sort(c), key: c}, c);
+          return React.createElement("th", {onClick: this.sort(c), sort: "asc", key: c}, c);
         }, this);
       }.bind(this);
 
@@ -71,7 +69,7 @@ var TableHeader = React.createClass({displayName: 'TableHeader',
   }
 });
 
-var TableRows = React.createClass({displayName: 'TableRows',
+var TableBody = React.createClass({displayName: "TableBody",
   render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
@@ -79,7 +77,7 @@ var TableRows = React.createClass({displayName: 'TableRows',
     return (
       React.createElement("tbody", null, 
         data.map(function(item, idx){
-          return React.createElement(TableRowItem, {key: idx, data: item, columns: columns});
+          return React.createElement(TableRow, {key: idx, data: item, columns: columns});
         })
       )
     )
@@ -87,7 +85,7 @@ var TableRows = React.createClass({displayName: 'TableRows',
 
 });
 
-var TableRowItem = React.createClass({displayName: 'TableRowItem',
+var TableRow = React.createClass({displayName: "TableRow",
   render: function() {
     var columns = this.props.columns;
     var data = this.props.data;
