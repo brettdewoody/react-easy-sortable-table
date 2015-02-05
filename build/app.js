@@ -25,6 +25,18 @@ var TableComponent = React.createClass({displayName: "TableComponent",
     }
   },
 
+  sortByColumn: function(array, column) {
+    return array.sort(function(a, b) {
+      var x = a[column]; var y = b[column];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+  },
+
+  sort: function(column) {
+    var sortedData = this.sortByColumn(this.state.data, column);
+    this.replaceState({data: sortedData});
+  },
+
   render: function() {
     var columns = this.getColumnNames();
     var data = this.state.data;
@@ -34,7 +46,7 @@ var TableComponent = React.createClass({displayName: "TableComponent",
       return (
         React.createElement("table", null, 
           React.createElement("thead", null, 
-            React.createElement(TableHeader, {columns: columns})
+            React.createElement(TableHeader, {onSort: this.sort, columns: columns})
           ), 
           React.createElement(TableBody, {columns: columns, data: data})
         )
@@ -50,9 +62,9 @@ var TableComponent = React.createClass({displayName: "TableComponent",
 
 var TableHeader = React.createClass({displayName: "TableHeader",
   sort: function(column) {
-    return function(event){
-
-    };
+    return function(event) {
+      this.props.onSort(column);
+    }.bind(this);
   },
 
   render: function() {
