@@ -26,23 +26,17 @@ var TableComponent = React.createClass({
   },
 
   render: function() {
-    var rows = [];
-    var columnNames = this.getColumnNames();
+    var columns = this.getColumnNames();
+    var data = this.state.data;
 
     if (this.isMounted()){
-
-      this.state.data.forEach(function(item, idx) {
-        rows.push(<TableRowItem key={item.id} data={item} columns={columnNames}/>)
-      }.bind(this));
 
       return (
         <table>
           <thead>
-            <TableHeader columns={columnNames}/>
+            <TableHeader columns={columns} />
           </thead>
-          <tbody>
-            { rows }
-          </tbody>
+          <TableRows columns={columns} data={data}/>
         </table>
       )
     } else {
@@ -55,13 +49,19 @@ var TableComponent = React.createClass({
 });
 
 var TableHeader = React.createClass({
-  render: function() {
 
+  sort: function(column) {
+    return function(event){
+
+    };
+  },
+
+  render: function() {
     var columns = this.props.columns;
 
     var cell = function() {
         return columns.map(function(c, i) {
-          return <th key={c}>{c}</th>;
+          return <th onClick={this.sort(c)} key={c}>{c}</th>;
         }, this);
       }.bind(this);
 
@@ -71,19 +71,35 @@ var TableHeader = React.createClass({
   }
 });
 
-var TableRowItem = React.createClass({
-  render: function() {
-
+var TableRows = React.createClass({
+  render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
 
+    return (
+      <tbody>
+        {data.map(function(item, idx){
+          return <TableRowItem key={idx} data={item} columns={columns}/>;
+        })}
+      </tbody>
+    )
+  }
+
+});
+
+var TableRowItem = React.createClass({
+  render: function() {
+    var columns = this.props.columns;
+    var data = this.props.data;
     var td = function(item) {
+
         return columns.map(function(c, i) {
-          return <td key={item[c]}>{item[c]}</td>;
+          return <td key={i}>{item[c]}</td>;
         }, this);
       }.bind(this);
 
     return (
+
       <tr key={data}>{ td(data) }</tr>
     )
   }

@@ -1,4 +1,4 @@
-var TableComponent = React.createClass({displayName: "TableComponent",
+var TableComponent = React.createClass({displayName: 'TableComponent',
 
   getInitialState: function() {
     return {
@@ -26,23 +26,17 @@ var TableComponent = React.createClass({displayName: "TableComponent",
   },
 
   render: function() {
-    var rows = [];
-    var columnNames = this.getColumnNames();
+    var columns = this.getColumnNames();
+    var data = this.state.data;
 
     if (this.isMounted()){
-
-      this.state.data.forEach(function(item, idx) {
-        rows.push(React.createElement(TableRowItem, {key: item.id, data: item, columns: columnNames}))
-      }.bind(this));
 
       return (
         React.createElement("table", null, 
           React.createElement("thead", null, 
-            React.createElement(TableHeader, {columns: columnNames})
+            React.createElement(TableHeader, {columns: columns})
           ), 
-          React.createElement("tbody", null, 
-            rows 
-          )
+          React.createElement(TableRows, {columns: columns, data: data})
         )
       )
     } else {
@@ -54,14 +48,20 @@ var TableComponent = React.createClass({displayName: "TableComponent",
 
 });
 
-var TableHeader = React.createClass({displayName: "TableHeader",
-  render: function() {
+var TableHeader = React.createClass({displayName: 'TableHeader',
 
+  sort: function(column) {
+    return function(event){
+
+    };
+  },
+
+  render: function() {
     var columns = this.props.columns;
 
     var cell = function() {
         return columns.map(function(c, i) {
-          return React.createElement("th", {key: c}, c);
+          return React.createElement("th", {onClick: this.sort(c), key: c}, c);
         }, this);
       }.bind(this);
 
@@ -71,19 +71,35 @@ var TableHeader = React.createClass({displayName: "TableHeader",
   }
 });
 
-var TableRowItem = React.createClass({displayName: "TableRowItem",
-  render: function() {
-
+var TableRows = React.createClass({displayName: 'TableRows',
+  render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
 
+    return (
+      React.createElement("tbody", null, 
+        data.map(function(item, idx){
+          return React.createElement(TableRowItem, {key: idx, data: item, columns: columns});
+        })
+      )
+    )
+  }
+
+});
+
+var TableRowItem = React.createClass({displayName: 'TableRowItem',
+  render: function() {
+    var columns = this.props.columns;
+    var data = this.props.data;
     var td = function(item) {
+
         return columns.map(function(c, i) {
-          return React.createElement("td", {key: item[c]}, item[c]);
+          return React.createElement("td", {key: i}, item[c]);
         }, this);
       }.bind(this);
 
     return (
+
       React.createElement("tr", {key: data},  td(data) )
     )
   }
