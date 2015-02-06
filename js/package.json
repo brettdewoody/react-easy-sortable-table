@@ -1,0 +1,28 @@
+{
+  "name": "react-easy-sortable-table",
+  "version": "1.0.0",
+  "description": "A component to display tabular data with simple sorting. Give it some JSON data, it'll give you a sortable table.",
+  "author": "Brett DeWoody",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/brettdewoody/react-table-component"
+},
+  "main": "/build/app.js",
+  "keywords": [
+  "javascript",
+  "react",
+  "react-component",
+  "table"
+],
+  "bugs": {
+    "mail": "brettdewoody@gmail.com",
+    "url": "https://github.com/brettdewoody/react-table-component/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "react-tools": "^0.12.2"
+  }
+}

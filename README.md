@@ -1,4 +1,4 @@
-# react-table-component
+# react-easy-sortable-table
 A reusable React component for viewing tabular data with simple sorting.
 
 ##How to Use##
