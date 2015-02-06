@@ -1,8 +1,9 @@
-var TableComponent = React.createClass({displayName: "TableComponent",
+var TableComponent = React.createClass({displayName: 'TableComponent',
 
   getInitialState: function() {
     return {
-      data: []
+      data: [],
+      sortDir: {}
     };
   },
 
@@ -25,24 +26,25 @@ var TableComponent = React.createClass({displayName: "TableComponent",
     }
   },
 
-  sortByColumn: function(array, column) {
+  sortByColumn: function(array, column, sortDir) {
     return array.sort(function(a, b) {
-      var x = a[column]; 
+      var x = a[column];
       var y = b[column];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      if (sortDir === 'asc') {
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+      } else {
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      }
     });
   },
 
-  sort: function(column, sortDir) {
-    var sortedData = this.sortByColumn(this.state.data, column);  
-    this.replaceState({data: sortedData});  
-    this.sortDir(this.props.sortDir);
-  },
-
-  sortDir: function(sortDir){
-    var sortDir = (sortDir === 'asc' ? 'dsc' : 'asc');
-    this.replaceProps({sortDir: sortDir});
-    console.log(this.props.sortDir);
+  sort: function(column) {
+    var sortDir = this.state.sortDir;
+    var data = this.state.data;
+    var sortedData = this.sortByColumn(data, column, sortDir[column]);
+    this.setState({data: sortedData});
+    sortDir[column] = (sortDir[column] === 'asc' ? 'dsc' : 'asc');
+    this.setState({sortDir: sortDir});
   },
 
   render: function() {
@@ -53,7 +55,7 @@ var TableComponent = React.createClass({displayName: "TableComponent",
       return (
         React.createElement("table", null, 
           React.createElement("thead", null, 
-            React.createElement(TableHeader, {onSort: this.sort, sortDir: this.sortDir, columns: columns})
+            React.createElement(TableHeader, {onSort: this.sort, columns: columns})
           ), 
           React.createElement(TableBody, {columns: columns, data: data})
         )
@@ -67,7 +69,7 @@ var TableComponent = React.createClass({displayName: "TableComponent",
 });
 
 
-var TableHeader = React.createClass({displayName: "TableHeader",
+var TableHeader = React.createClass({displayName: 'TableHeader',
   sort: function(column) {
     return function(event) {
       var sortDir = this.props.sortDir;
@@ -75,11 +77,17 @@ var TableHeader = React.createClass({displayName: "TableHeader",
     }.bind(this);
   },
 
+  sortDir: function(column) {
+    return function() {
+      this.props.sortColDir(column);
+    }.bind(this);
+  },
+
   render: function() {
     var columns = this.props.columns;
     var cell = function() {
         return columns.map(function(c, i) {
-          return React.createElement("th", {onClick: this.sort(c), sortDir: this.props.sortDir, key: c}, c);
+          return React.createElement("th", {onClick: this.sort(c), key: c}, c);
         }, this);
       }.bind(this);
 
@@ -90,7 +98,7 @@ var TableHeader = React.createClass({displayName: "TableHeader",
 });
 
 
-var TableBody = React.createClass({displayName: "TableBody",
+var TableBody = React.createClass({displayName: 'TableBody',
   render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
@@ -106,7 +114,7 @@ var TableBody = React.createClass({displayName: "TableBody",
 });
 
 
-var TableRow = React.createClass({displayName: "TableRow",
+var TableRow = React.createClass({displayName: 'TableRow',
   render: function() {
     var columns = this.props.columns;
     var data = this.props.data;

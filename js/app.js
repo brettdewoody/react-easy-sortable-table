@@ -2,7 +2,8 @@ var TableComponent = React.createClass({
 
   getInitialState: function() {
     return {
-      data: []
+      data: [],
+      sortDir: {}
     };
   },
 
@@ -25,24 +26,25 @@ var TableComponent = React.createClass({
     }
   },
 
-  sortByColumn: function(array, column) {
+  sortByColumn: function(array, column, sortDir) {
     return array.sort(function(a, b) {
-      var x = a[column]; 
+      var x = a[column];
       var y = b[column];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      if (sortDir === 'asc') {
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+      } else {
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+      }
     });
   },
 
-  sort: function(column, sortDir) {
-    var sortedData = this.sortByColumn(this.state.data, column);  
-    this.replaceState({data: sortedData});  
-    this.sortDir(this.props.sortDir);
-  },
-
-  sortDir: function(sortDir){
-    var sortDir = (sortDir === 'asc' ? 'dsc' : 'asc');
-    this.replaceProps({sortDir: sortDir});
-    console.log(this.props.sortDir);
+  sort: function(column) {
+    var sortDir = this.state.sortDir;
+    var data = this.state.data;
+    var sortedData = this.sortByColumn(data, column, sortDir[column]);
+    this.setState({data: sortedData});
+    sortDir[column] = (sortDir[column] === 'asc' ? 'dsc' : 'asc');
+    this.setState({sortDir: sortDir});
   },
 
   render: function() {
@@ -53,7 +55,7 @@ var TableComponent = React.createClass({
       return (
         <table>
           <thead>
-            <TableHeader onSort={this.sort} sortDir={this.sortDir} columns={columns} />
+            <TableHeader onSort={this.sort} columns={columns} />
           </thead>
           <TableBody columns={columns} data={data}/>
         </table>
@@ -75,11 +77,17 @@ var TableHeader = React.createClass({
     }.bind(this);
   },
 
+  sortDir: function(column) {
+    return function() {
+      this.props.sortColDir(column);
+    }.bind(this);
+  },
+
   render: function() {
     var columns = this.props.columns;
     var cell = function() {
         return columns.map(function(c, i) {
-          return <th onClick={this.sort(c)} sortDir={this.props.sortDir} key={c}>{c}</th>;
+          return <th onClick={this.sort(c)} key={c}>{c}</th>;
         }, this);
       }.bind(this);
 
