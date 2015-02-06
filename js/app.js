@@ -57,7 +57,7 @@ var TableComponent = React.createClass({
           <thead>
             <TableHeader onSort={this.sort} columns={columns} />
           </thead>
-          <TableBody columns={columns} data={data}/>
+          <TableBody data={data} columns={columns} />
         </table>
       )
     } else {
@@ -126,7 +126,6 @@ var TableRow = React.createClass({
       }.bind(this);
 
     return (
-
       <tr key={data}>{ td(data) }</tr>
     )
   }
