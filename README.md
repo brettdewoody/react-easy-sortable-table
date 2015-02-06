@@ -29,3 +29,5 @@ where `data.json` consists of similarly structured objects. Something like:
 The result is a table with headers for `name`, `address`, `city`, `region`, `country` and `birthday`.
 
 Clicking a header will sort the table by that column in ascending order. Clicking the header again will sort the table by that column in descending order.
+
+Your data objects can have as many properties as desired as long as all objects in the data file have the same properties. The order of the properties in each object can vary, though the headers will take their order from the first object in the data file.
