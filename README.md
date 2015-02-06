@@ -7,6 +7,25 @@ You'll need to have a simple web server running. If you're on a Mac with Python,
 
     python -m SimpleHTTPServer
 
-Then open your favorite browser and go to
+Then open your favorite browser and go to:
 
     http://localhost:8000/
+
+The component takes an input of JSON formatted data file:
+
+    React.render(<TableComponent src="./data/data.json" />, mountNode)
+
+where `data.json` consists of similarly structured objects. Something like:
+
+    {
+      "name": "Emily Donovan",
+      "address": "Ap #677-3529 Morbi Rd.",
+      "city": "Whitby",
+      "region": "ON",
+      "country": "Canada",
+      "birthday": "1998-08-26"
+    }
+
+The result is a table with headers for `name`, `address`, `city`, `region`, `country` and `birthday`.
+
+Clicking a header will sort the table by that column in ascending order. Clicking the header again will sort the table by that column in descending order.
