@@ -77,12 +77,6 @@ var TableHeader = React.createClass({
     }.bind(this);
   },
 
-  sortDir: function(column) {
-    return function() {
-      this.props.sortColDir(column);
-    }.bind(this);
-  },
-
   render: function() {
     var columns = this.props.columns;
     var cell = function() {

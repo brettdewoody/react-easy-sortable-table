@@ -1,4 +1,4 @@
-var TableComponent = React.createClass({displayName: "TableComponent",
+var TableComponent = React.createClass({displayName: 'TableComponent',
 
   getInitialState: function() {
     return {
@@ -57,7 +57,7 @@ var TableComponent = React.createClass({displayName: "TableComponent",
           React.createElement("thead", null, 
             React.createElement(TableHeader, {onSort: this.sort, columns: columns})
           ), 
-          React.createElement(TableBody, {columns: columns, data: data})
+          React.createElement(TableBody, {data: data, columns: columns})
         )
       )
     } else {
@@ -69,17 +69,11 @@ var TableComponent = React.createClass({displayName: "TableComponent",
 });
 
 
-var TableHeader = React.createClass({displayName: "TableHeader",
+var TableHeader = React.createClass({displayName: 'TableHeader',
   sort: function(column) {
     return function(event) {
       var sortDir = this.props.sortDir;
       this.props.onSort(column, sortDir);
-    }.bind(this);
-  },
-
-  sortDir: function(column) {
-    return function() {
-      this.props.sortColDir(column);
     }.bind(this);
   },
 
@@ -98,7 +92,7 @@ var TableHeader = React.createClass({displayName: "TableHeader",
 });
 
 
-var TableBody = React.createClass({displayName: "TableBody",
+var TableBody = React.createClass({displayName: 'TableBody',
   render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
@@ -114,7 +108,7 @@ var TableBody = React.createClass({displayName: "TableBody",
 });
 
 
-var TableRow = React.createClass({displayName: "TableRow",
+var TableRow = React.createClass({displayName: 'TableRow',
   render: function() {
     var columns = this.props.columns;
     var data = this.props.data;
@@ -126,7 +120,6 @@ var TableRow = React.createClass({displayName: "TableRow",
       }.bind(this);
 
     return (
-
       React.createElement("tr", {key: data},  td(data) )
     )
   }
