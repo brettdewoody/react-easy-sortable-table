@@ -27,14 +27,22 @@ var TableComponent = React.createClass({
 
   sortByColumn: function(array, column) {
     return array.sort(function(a, b) {
-      var x = a[column]; var y = b[column];
+      var x = a[column]; 
+      var y = b[column];
       return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
   },
 
-  sort: function(column) {
-    var sortedData = this.sortByColumn(this.state.data, column);
-    this.replaceState({data: sortedData});
+  sort: function(column, sortDir) {
+    var sortedData = this.sortByColumn(this.state.data, column);  
+    this.replaceState({data: sortedData});  
+    this.sortDir(this.props.sortDir);
+  },
+
+  sortDir: function(sortDir){
+    var sortDir = (sortDir === 'asc' ? 'dsc' : 'asc');
+    this.replaceProps({sortDir: sortDir});
+    console.log(this.props.sortDir);
   },
 
   render: function() {
@@ -45,7 +53,7 @@ var TableComponent = React.createClass({
       return (
         <table>
           <thead>
-            <TableHeader onSort={this.sort} columns={columns} />
+            <TableHeader onSort={this.sort} sortDir={this.sortDir} columns={columns} />
           </thead>
           <TableBody columns={columns} data={data}/>
         </table>
@@ -58,10 +66,12 @@ var TableComponent = React.createClass({
   }
 });
 
+
 var TableHeader = React.createClass({
   sort: function(column) {
     return function(event) {
-      this.props.onSort(column);
+      var sortDir = this.props.sortDir;
+      this.props.onSort(column, sortDir);
     }.bind(this);
   },
 
@@ -69,7 +79,7 @@ var TableHeader = React.createClass({
     var columns = this.props.columns;
     var cell = function() {
         return columns.map(function(c, i) {
-          return <th onClick={this.sort(c)} sort={"asc"} key={c}>{c}</th>;
+          return <th onClick={this.sort(c)} sortDir={this.props.sortDir} key={c}>{c}</th>;
         }, this);
       }.bind(this);
 
@@ -78,6 +88,7 @@ var TableHeader = React.createClass({
     )
   }
 });
+
 
 var TableBody = React.createClass({
   render: function(){
@@ -93,6 +104,7 @@ var TableBody = React.createClass({
     )
   }
 });
+
 
 var TableRow = React.createClass({
   render: function() {
@@ -111,6 +123,7 @@ var TableRow = React.createClass({
     )
   }
 });
+
 
 React.render(
   <TableComponent src="./data/data.json" />,
