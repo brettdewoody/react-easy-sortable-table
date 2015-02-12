@@ -14,9 +14,7 @@ var TableComponent = React.createClass({
 
       for (var key in data) {
         var item = data[key];
-        var diff = Date.now() - Date.parse(item.birthday);
-        var diffdays = diff / 1000 / (60 * 60 * 24);
-        var age = Math.floor(diffdays / 365.25);
+        var age = ~~((Date.now() - Date.parse(item.birthday)) / (31557600000));
         item.age = age;
       }
 
