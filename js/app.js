@@ -20,7 +20,6 @@ var TableComponent = React.createClass({
         item.age = age;
       }
 
-
       if (this.isMounted()) {
         this.setState({
           data: data
