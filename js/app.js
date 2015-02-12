@@ -8,9 +8,19 @@ var TableComponent = React.createClass({
   },
 
   componentDidMount: function(){
-    $.getJSON('./data/data.json', {
+    $.getJSON(this.props.src, {
       format: "json"
     }).done(function(data) {
+
+      for (var key in data) {
+        var item = data[key];
+        var diff = Date.now() - Date.parse(item.birthday);
+        var diffdays = diff / 1000 / (60 * 60 * 24);
+        var age = Math.floor(diffdays / 365.25);
+        item.age = age;
+      }
+
+
       if (this.isMounted()) {
         this.setState({
           data: data

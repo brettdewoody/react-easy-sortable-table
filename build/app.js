@@ -1,4 +1,4 @@
-var TableComponent = React.createClass({displayName: 'TableComponent',
+var TableComponent = React.createClass({displayName: "TableComponent",
 
   getInitialState: function() {
     return {
@@ -8,9 +8,19 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
   },
 
   componentDidMount: function(){
-    $.getJSON('./data/data.json', {
+    $.getJSON(this.props.src, {
       format: "json"
     }).done(function(data) {
+
+      for (var key in data) {
+        var item = data[key];
+        var diff = Date.now() - Date.parse(item.birthday);
+        var diffdays = diff / 1000 / (60 * 60 * 24);
+        var age = Math.floor(diffdays / 365.25);
+        item.age = age;
+      }
+
+
       if (this.isMounted()) {
         this.setState({
           data: data
@@ -69,7 +79,7 @@ var TableComponent = React.createClass({displayName: 'TableComponent',
 });
 
 
-var TableHeader = React.createClass({displayName: 'TableHeader',
+var TableHeader = React.createClass({displayName: "TableHeader",
   sort: function(column) {
     return function(event) {
       var sortDir = this.props.sortDir;
@@ -92,7 +102,7 @@ var TableHeader = React.createClass({displayName: 'TableHeader',
 });
 
 
-var TableBody = React.createClass({displayName: 'TableBody',
+var TableBody = React.createClass({displayName: "TableBody",
   render: function(){
     var columns = this.props.columns;
     var data = this.props.data;
@@ -108,7 +118,7 @@ var TableBody = React.createClass({displayName: 'TableBody',
 });
 
 
-var TableRow = React.createClass({displayName: 'TableRow',
+var TableRow = React.createClass({displayName: "TableRow",
   render: function() {
     var columns = this.props.columns;
     var data = this.props.data;
