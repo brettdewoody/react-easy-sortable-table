@@ -12,12 +12,6 @@ var TableComponent = React.createClass({
       format: "json"
     }).done(function(data) {
 
-      for (var key in data) {
-        var item = data[key];
-        var age = ~~((Date.now() - Date.parse(item.birthday)) / (31557600000));
-        item.age = age;
-      }
-
       if (this.isMounted()) {
         this.setState({
           data: data
@@ -134,6 +128,5 @@ var TableRow = React.createClass({
 
 
 React.render(
-  <TableComponent src="./data/data.json" />,
-  document.getElementById('table')
+  <TableComponent src="./data/data.json" />, document.getElementById('table')
 )
