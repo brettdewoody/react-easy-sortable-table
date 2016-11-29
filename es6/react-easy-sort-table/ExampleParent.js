@@ -20,6 +20,7 @@ export default class ExampleParent extends Component {
 
   render() {
 
+    // need to load the data, picked an arbitrary number for length
     if (this.props.data.length < 6) {
       return (<div>Loading...</div>)
     }
